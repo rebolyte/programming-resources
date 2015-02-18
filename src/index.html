@@ -4,9 +4,20 @@
 <head>
 	<meta charset="UTF-8" />
 	<title>Programming Resources</title>
+	
+	<link rel="stylesheet" href="styles/style.css" type="text/css">	
+
+	<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.1.4/zepto.min.js"></script> -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+	
+	<script src="js/json2html.js"></script>
+	<script src="js/jquery.json2html.js"></script>
+	
 </head>
 <body>
 
+<section id="container">
+	
 <h1>Programming Resources</h1>
 
 <p>Here are some programming resources for your perusal.</p>
@@ -38,7 +49,27 @@
 
 <p>More coming soon!</p>
 
-<p>Eventually...</p>
+
+<div id="output"></div>
+
+<footer>
+	<small>Assembled by <a href="http://twitter.com/rebolyte">@rebolyte</a>. Last Updated: 18-Feb-2015</small>
+</footer>
+
+</section>
+
+<script>
+	var transform = {'tag':'li','html':'${name} (${age})'};
+
+	var data = [
+	    {'name':'Bob','age':40},
+	    {'name':'Frank','age':15},
+	    {'name':'Bill','age':65},
+	    {'name':'Robert','age':24}
+	];
+
+	$('#output').json2html(data,transform);
+</script>
 
 </body>
 </html>
