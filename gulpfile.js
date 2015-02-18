@@ -5,6 +5,8 @@ var deploy	= require('gulp-gh-pages');
 // http://www.michael-whelan.net/deploying-sandra-snow-to-github-pages-with-gulp/
 // https://github.com/rowoot/gulp-gh-pages
 
+// https://gist.github.com/cobyism/4730490
+
 gulp.task('build', function () {
   gulp.src('./src/**/*')
     .pipe(gulp.dest('./dist'));
