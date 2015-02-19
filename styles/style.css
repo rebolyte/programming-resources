@@ -48,6 +48,10 @@ a:hover {
 	-webkit-border-radius: 4px;
 	padding: 20px;
 }
+li span {
+	color: #ccc;
+	font-size: 88%;
+}
 footer {
 	font-size: 12px;
 	text-align: center;
