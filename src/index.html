@@ -7,11 +7,26 @@
 	
 	<link rel="stylesheet" href="styles/style.css" type="text/css">	
 
-	<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.1.4/zepto.min.js"></script> -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+	<script src="js/tmpl.min.js"></script>
 	
-	<script src="js/json2html.js"></script>
-	<script src="js/jquery.json2html.js"></script>
+	<!--
+	https://coderwall.com/p/duapqq/use-a-google-spreadsheet-as-your-json-backend
+
+	http://www.nextofwindows.com/how-to-use-google-doc-spreadsheet-serve-json-from-excel-spreadsheet/
+
+	https://developers.google.com/gdata/samples/spreadsheet_sample
+
+	https://spreadsheets.google.com/feeds/list/o13394135408524254648.240766968415752635/od6/public/basic?alt=json
+
+	https://www.jsoneditoronline.org/
+
+	http://json2html.com/
+	
+	https://github.com/blueimp/JavaScript-Templates
+	
+	My spreadsheet:
+	https://docs.google.com/spreadsheets/d/1n8zXA_440pgxqD8ANamqsjAV4YivBZBaMDJpE0Tjn7A/edit#gid=0
+	-->
 	
 </head>
 <body>
@@ -21,6 +36,9 @@
 <h1>Programming Resources</h1>
 
 <p>Here are some programming resources for your perusal.</p>
+
+<p>(Fun fact: This list is generated from a Google Spreadsheet! The JSON is handled with the super-tiny 
+	<a href="https://github.com/blueimp/JavaScript-Templates">JavaScript Templates</a> library.)</p>
 
 <h2>JavaScript</h2>
 
@@ -58,18 +76,43 @@
 
 </section>
 
-<script>
-	var transform = {'tag':'li','html':'${name} (${age})'};
 
-	var data = [
-	    {'name':'Bob','age':40},
-	    {'name':'Frank','age':15},
-	    {'name':'Bill','age':65},
-	    {'name':'Robert','age':24}
-	];
+<!-- {% stream(log); %} -->
 
-	$('#output').json2html(data,transform);
+<script type="text/x-tmpl" id="tmpl-links">
+<ul>
+{% for (var i=0; i < o.length; i++) { %}
+    <li><a href="{%=o[i].title.$t%}">{%=extractTitle(o[i].content.$t)%}</a> <span>{%=extractDate(o[i].content.$t)%}</span></li>
+{% } %}
+</ul>
 </script>
+
+<script>
+
+	function extractTitle (str) {
+		var titleEndInd = str.indexOf(', date-added:');
+		return str ? str.slice(7, titleEndInd) : '';
+	};
+	function extractDate (str) {
+		console.log(str);
+		var titleEndInd = str.indexOf(', date-added:');
+		return str ? str.slice(titleEndInd + 13, str.length) : '';
+	};
+
+	tmpl.helper += ",log=function(){console.log.apply(console, arguments)}" +
+	    ",st='',stream=function(cb){var l=st.length;st=_s;cb( _s.slice(l));}";
+
+	// the callback	
+	function placeJson (json) {
+		if (json) {
+			document.getElementById('output').innerHTML = tmpl('tmpl-links', json.feed.entry);
+		}
+	};
+	
+</script>
+
+<!-- Load data feed from Google spreadsheet -->
+<script src="https://spreadsheets.google.com/feeds/list/1n8zXA_440pgxqD8ANamqsjAV4YivBZBaMDJpE0Tjn7A/od6/public/basic?alt=json&callback=placeJson"></script>
 
 </body>
 </html>
