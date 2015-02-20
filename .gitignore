@@ -4,6 +4,7 @@
 
 node_modules/
 dist/
+.c9/
 
 # Compiled source #
 ###################
